@@ -1,14 +1,20 @@
 package com.drsync.overscrolllayout
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.dynamicanimation.animation.SpringForce
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drsync.overscrolllayout.databinding.ActivitySecondBinding
+
 
 class SecondActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySecondBinding
     private lateinit var mAdapter: RecyclerAdapter
+    private lateinit var bounceEdgeEffectFactory: BounceEdgeEffectFactory
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +22,8 @@ class SecondActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mAdapter = RecyclerAdapter {  }
+        bounceEdgeEffectFactory = BounceEdgeEffectFactory()
+
         val listColor = listOf(
             "#37306B",
             "#66347F",
@@ -32,14 +40,40 @@ class SecondActivity : AppCompatActivity() {
         )
 
         mAdapter.submitList(listColor)
-        binding.rvItem.apply {
+        bounceEdgeEffectFactory.apply {
+            mSpringForce = SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY
+            overScrollTranslationMagnitude = 0.2f
+            flingTranslationMagnitude = 0.2f
+        }
+
+        binding.rvItemHorizontal.apply {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(this@SecondActivity)
-            edgeEffectFactory = BounceEdgeEffectFactory()
+            edgeEffectFactory =  bounceEdgeEffectFactory
         }
 
         binding.btnBack.setOnClickListener {
             finish()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_layout_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_vertical -> {
+                layoutManager = LinearLayoutManager(this@SecondActivity)
+                binding.rvItemHorizontal.layoutManager = layoutManager
+            }
+            R.id.menu_horizontal -> {
+                layoutManager = LinearLayoutManager(this@SecondActivity, LinearLayoutManager.HORIZONTAL, false)
+                binding.rvItemHorizontal.layoutManager = layoutManager
+            }
+        }
+        return true
     }
 }

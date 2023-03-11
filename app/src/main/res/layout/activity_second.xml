@@ -7,12 +7,13 @@
     tools:context=".SecondActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_item"
+        android:id="@+id/rv_item_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        tools:orientation="horizontal"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
