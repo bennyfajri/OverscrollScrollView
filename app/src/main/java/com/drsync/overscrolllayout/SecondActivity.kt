@@ -23,6 +23,7 @@ class SecondActivity : AppCompatActivity() {
 
         mAdapter = RecyclerAdapter {  }
         bounceEdgeEffectFactory = BounceEdgeEffectFactory()
+        layoutManager = LinearLayoutManager(this@SecondActivity)
 
         val listColor = listOf(
             "#37306B",
@@ -48,7 +49,7 @@ class SecondActivity : AppCompatActivity() {
 
         binding.rvItemHorizontal.apply {
             adapter = mAdapter
-            layoutManager = LinearLayoutManager(this@SecondActivity)
+            layoutManager = layoutManager
             edgeEffectFactory =  bounceEdgeEffectFactory
         }
 
